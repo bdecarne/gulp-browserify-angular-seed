@@ -1,11 +1,13 @@
 'use strict';
 
-var angular = require('angular');
-require('angular-ui-router');
-
 // namespace
-var Namespace = require('namespacejs');
-Namespace.create('myApp.states.home').means({});
+require('namespacejs').create('myApp.states.home').means({});
+
+// module definition
+myApp.states.home.module = angular.module('myApp.states.home', []);
+
+// requires
+require('./home-controller');
 
 /**
  * @constructor
@@ -15,12 +17,11 @@ myApp.states.home.Configuration = function($stateProvider) {
   $stateProvider
     .state('home', {
       url: "/",
-      templateUrl: "states/home/home.html"
+      templateUrl: "states/home/home.html",
+      controller: "HomeCtrl as home"
     });
 }
 
-/**
- * home module
- */
-angular.module('myApp.states.home', [])
+// module configuration
+myApp.states.home.module
   .config(myApp.states.home.Configuration);
