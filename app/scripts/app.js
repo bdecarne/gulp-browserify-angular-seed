@@ -7,8 +7,11 @@ Namespace.create('myApp').means({
   components: {}
 });
 
-// requires
+// module definition
 var angular = require('angular');
+myApp.module = angular.module('myApp', ['ui.router', 'myApp.states.home']);
+
+// requires
 require('angular-ui-router');
 require('./states/home/home');
 
@@ -21,5 +24,5 @@ myApp.Configuration = function ($urlRouterProvider) {
 }
 
 // main app module definition
-angular.module('myApp', ['ui.router', 'myApp.states.home'])
+myApp.module
   .config(myApp.Configuration);
