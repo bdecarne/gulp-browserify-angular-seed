@@ -41,6 +41,7 @@ function browserSyncInit(baseDir, files, browser) {
 
 gulp.task('serve', ['watch'], function () {
   browserSyncInit([
+    '.tmp/templates',
     '.tmp',
     'app'
   ], [

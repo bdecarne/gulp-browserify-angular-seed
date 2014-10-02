@@ -1,18 +1,25 @@
 'use strict';
+
+// application namespace
+var Namespace = require('namespacejs');
+Namespace.create('myApp').means({
+  states: {},
+  components: {}
+});
+
+// requires
 var angular = require('angular');
 require('angular-ui-router');
+require('./states/home/home');
 
 /**
- * Main app.
+ * @constructor
+ * @ngInject
  */
-var app = angular.module('app', ['ui.router']);
+myApp.Configuration = function ($urlRouterProvider) {
+  $urlRouterProvider.otherwise("/");
+}
 
-angular.module('app')
-    .config(function($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise("/");
-        $stateProvider
-            .state('home', {
-                url: "/",
-                templateUrl: "templates/home/home.html"
-            })
-    });
+// main app module definition
+angular.module('myApp', ['ui.router', 'myApp.states.home'])
+  .config(myApp.Configuration);

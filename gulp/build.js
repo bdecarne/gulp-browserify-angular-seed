@@ -46,8 +46,8 @@ gulp.task('templates:dist', ['templates'], function() {
             quotes: true
         }))
         .pipe($.ngHtml2js({
-            moduleName: 'app',
-            prefix: 'templates/'
+            moduleName: 'myApp',
+            prefix: ''
         }))
         .pipe($.concat('templates.js'))
         .pipe(gulp.dest('.tmp/templates'))

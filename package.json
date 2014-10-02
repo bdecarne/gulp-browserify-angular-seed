@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "angular": "~1.2.23",
-    "angular-ui-router": "~0.2.10"
+    "angular-ui-router": "~0.2.10",
+    "namespacejs": "0.0.8"
   },
   "devDependencies": {
     "gulp": "~3.8.8",
