@@ -18,7 +18,7 @@ myApp.states.home.Configuration = function($stateProvider) {
     .state('home', {
       url: "/",
       templateUrl: "states/home/home.html",
-      controller: "HomeCtrl as home"
+      controller: "HomeCtrl"
     });
 }
 
