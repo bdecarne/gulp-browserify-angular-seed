@@ -1,7 +1,6 @@
 'use strict';
 
 var browserify = require('browserify');
-var watchify = require('watchify');
 var gulp = require('gulp');
 var source = require('vinyl-source-stream');
 
@@ -13,7 +12,7 @@ var $ = require('gulp-load-plugins')({
  * scripts
  **/
 gulp.task('scripts', function() {
-    return browserify({
+   return browserify({
           entries: ['./app/scripts/app.js'],
           paths: ['./node_modules', './app/scripts/']
         })
