@@ -12,7 +12,10 @@ var $ = require('gulp-load-plugins')({
  * scripts
  **/
 gulp.task('scripts', function() {
-    return browserify('./app/scripts/app.js')
+    return browserify({
+          entries: ['./app/scripts/app.js'],
+          paths: ['./node_modules', './app/scripts/']
+        })
         .bundle()
         //Pass desired output filename to vinyl-source-stream
         .pipe(source('app.js'))
