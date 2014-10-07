@@ -1,27 +1,23 @@
-'use strict';
+(function() {
+  'use strict';
 
-// namespace
-require('namespacejs').create('myApp.states.home').means({});
+  // module definition
+  angular.module('app.states.home', [])
+    .config(config);
 
-// module definition
-myApp.states.home.module = angular.module('myApp.states.home', []);
+  // requires
+  require('./home.controller');
 
-// requires
-require('./home-controller');
+  /**
+   * @ngInject
+   */
+  function config($stateProvider) {
+    $stateProvider
+      .state('home', {
+        url: "/",
+        templateUrl: "states/home/home.html",
+        controller: "HomeController"
+      });
+  }
 
-/**
- * @constructor
- * @ngInject
- */
-myApp.states.home.Configuration = function($stateProvider) {
-  $stateProvider
-    .state('home', {
-      url: "/",
-      templateUrl: "states/home/home.html",
-      controller: "HomeCtrl"
-    });
-}
-
-// module configuration
-myApp.states.home.module
-  .config(myApp.states.home.Configuration);
+})();

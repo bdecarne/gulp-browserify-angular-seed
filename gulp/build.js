@@ -1,6 +1,7 @@
 'use strict';
 
 var browserify = require('browserify');
+var watchify = require('watchify');
 var gulp = require('gulp');
 var source = require('vinyl-source-stream');
 
@@ -49,7 +50,7 @@ gulp.task('templates:dist', ['templates'], function() {
             quotes: true
         }))
         .pipe($.ngHtml2js({
-            moduleName: 'myApp',
+            moduleName: 'app',
             prefix: ''
         }))
         .pipe($.concat('templates.js'))
