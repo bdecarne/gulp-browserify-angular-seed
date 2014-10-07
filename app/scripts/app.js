@@ -7,11 +7,22 @@
 
   // module definition
   angular.module('app', [
-    // angular modules
-    // contrib modules
+
+    /*
+     * Angular modules
+     */
+     // 'ngAnimate'
+
+    /*
+     * 3rd Party modules
+     */
     'ui.router',
-    // app modules
+
+    /*
+     * States
+     */
     'app.states.home'
+
   ]).config(config);
 
   // states
