@@ -1,17 +1,21 @@
 'use strict';
 
 var gulp = require('gulp');
-var karma = require('gulp-karma');
+var protractor = require('gulp-protractor');
 var browserSync = require('browser-sync');
 
-gulp.task('e2e-only', function (done) {
+// Downloads the selenium webdriver
+gulp.task('webdriver-update', protractor.webdriver_update);
+gulp.task('webdriver-standalone', protractor.webdriver_standalone);
+
+gulp.task('e2e-only', ['webdriver-update'], function (done) {
   var testFiles = [
     'test/e2e/**/*.js'
   ];
   return gulp.src(testFiles)
-    .pipe(karma({
-      configFile: 'test/karma.conf.js',
-      action: 'run'
+    .pipe(protractor.protractor({
+      configFile: 'test/protractor.conf.js',
+      args: ['--baseUrl', 'http://127.0.0.1:3000']
     }))
     .on('error', function (err) {
       // Make sure failed tests cause gulp to exit non-zero
@@ -22,9 +26,7 @@ gulp.task('e2e-only', function (done) {
       browserSync.exit();
       done();
     });
-  // todo
 });
 
-gulp.task('e2e', ['serve:e2e', 'e2e-only']);
-gulp.task('e2e:src', ['serve:e2e', 'e2e-only']);
-gulp.task('e2e:dist', ['serve:e2e:dist', 'e2e-only']);
+gulp.task('e2e-tests', ['serve:e2e', 'e2e-only']);
+gulp.task('e2e-tests:dist', ['serve:e2e:dist', 'e2e-only']);

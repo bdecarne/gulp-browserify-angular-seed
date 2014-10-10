@@ -58,7 +58,7 @@ gulp.task('serve:dist', ['build:dist'], function () {
 });
 
 gulp.task('serve:e2e', ['styles', 'scripts', 'templates'], function () {
-  browserSyncInit(['.tmp/templates', 'app', '.tmp'], null, []);
+  browserSyncInit(['.tmp/templates', '.tmp', 'app'], null, []);
 });
 
 gulp.task('serve:e2e:dist', ['build:dist'], function () {
