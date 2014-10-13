@@ -3,6 +3,7 @@
 var browserify = require('browserify');
 var gulp = require('gulp');
 var source = require('vinyl-source-stream');
+var lazypipe = require('lazypipe');
 
 var $ = require('gulp-load-plugins')({
     pattern: ['gulp-*']
@@ -23,30 +24,33 @@ gulp.task('browserify', function() {
     .pipe(gulp.dest('.tmp/scripts'));
 });
 
+// config pipe
+var configPipe = lazypipe()
+  .pipe($.yaml)
+  .pipe($.extend, 'config.js')
+  .pipe($.wrap, 'angular.module(\'app\').value(\'appConfig\', <%= contents %>);');
+
 gulp.task('config', function() {
   return gulp.src('./config/config.yml')
-    .pipe($.yaml())
-    .pipe($.extend('config.js'))
-    .pipe($.wrap('angular.module(\'app\').value(\'appConfig\', <%= contents %>);'))
-    .pipe(gulp.dest('./.tmp/scripts'))
+    .pipe(configPipe())
+    .pipe(gulp.dest('./.tmp/scripts'));
 });
 
 gulp.task('config:dist', function() {
   return gulp.src(['./config/config.yml', './config/config.dist.yml'])
-    .pipe($.yaml())
-    .pipe($.extend('config.dist.js'))
-    .pipe($.wrap('angular.module(\'app\').value(\'appConfig\', <%= contents %>);'))
-    .pipe(gulp.dest('./.tmp/scripts'))
+    .pipe(configPipe())
+    .pipe(gulp.dest('./.tmp/scripts'));
 });
 
 gulp.task('scripts', ['browserify', 'config'], function() {
   return gulp.src(['.tmp/scripts/app.js', '.tmp/scripts/config.js'])
     .pipe($.concat('app.js'))
-    .pipe(gulp.dest('.tmp/scripts'));
+    .pipe(gulp.dest('.tmp/scripts'))
+    .pipe($.size());
 });
 
 gulp.task('scripts:dist', ['browserify', 'config:dist', 'templates:dist'], function() {
-  return gulp.src(['.tmp/scripts/app.js', '.tmp/scripts/config.dist.js', '.tmp/templates/templates.js'])
+  return gulp.src(['.tmp/scripts/app.js', '.tmp/scripts/config.js', '.tmp/templates/templates.js'])
     .pipe($.concat('app.js'))
     .pipe($.ngAnnotate())
     .pipe($.uglify())
