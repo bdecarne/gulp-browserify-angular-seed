@@ -11,8 +11,9 @@
   /**
    * @ngInject
    */
-  function HomeController($scope) {
+  function HomeController($scope, appConfig) {
     $scope.name = 'Wookie';
+    $scope.appConfig = appConfig;
   }
 
 })();

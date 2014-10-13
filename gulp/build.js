@@ -11,25 +11,47 @@ var $ = require('gulp-load-plugins')({
 /**
  * scripts
  **/
-gulp.task('scripts', function() {
-   return browserify({
-          entries: ['./app/scripts/app.js'],
-          paths: ['./node_modules', './app/scripts/']
-        })
-        .bundle()
-        //Pass desired output filename to vinyl-source-stream
-        .pipe(source('app.js'))
-        // Start piping stream to tasks!
-        .pipe(gulp.dest('.tmp/scripts'));
+gulp.task('browserify', function() {
+  return browserify({
+    entries: ['./app/scripts/app.js'],
+    paths: ['./node_modules', './app/scripts/']
+  })
+    .bundle()
+    //Pass desired output filename to vinyl-source-stream
+    .pipe(source('app.js'))
+    // Start piping stream to tasks!
+    .pipe(gulp.dest('.tmp/scripts'));
 });
 
-gulp.task('scripts:dist', ['scripts', 'templates:dist'], function() {
-    return gulp.src(['.tmp/scripts/app.js', '.tmp/templates/templates.js'])
-        .pipe($.concat('app.js'))
-        .pipe($.ngAnnotate())
-        .pipe($.uglify())
-        .pipe(gulp.dest('dist/scripts'))
-        .pipe($.size());
+gulp.task('config', function() {
+  return gulp.src('./config/config.yml')
+    .pipe($.yaml())
+    .pipe($.extend('config.js'))
+    .pipe($.wrap('angular.module(\'app\').value(\'appConfig\', <%= contents %>);'))
+    .pipe(gulp.dest('./.tmp/scripts'))
+});
+
+gulp.task('config:dist', function() {
+  return gulp.src(['./config/config.yml', './config/config.dist.yml'])
+    .pipe($.yaml())
+    .pipe($.extend('config.dist.js'))
+    .pipe($.wrap('angular.module(\'app\').value(\'appConfig\', <%= contents %>);'))
+    .pipe(gulp.dest('./.tmp/scripts'))
+});
+
+gulp.task('scripts', ['browserify', 'config'], function() {
+  return gulp.src(['.tmp/scripts/app.js', '.tmp/scripts/config.js'])
+    .pipe($.concat('app.js'))
+    .pipe(gulp.dest('.tmp/scripts'));
+});
+
+gulp.task('scripts:dist', ['browserify', 'config:dist', 'templates:dist'], function() {
+  return gulp.src(['.tmp/scripts/app.js', '.tmp/scripts/config.dist.js', '.tmp/templates/templates.js'])
+    .pipe($.concat('app.js'))
+    .pipe($.ngAnnotate())
+    .pipe($.uglify())
+    .pipe(gulp.dest('dist/scripts'))
+    .pipe($.size());
 });
 
 /**
