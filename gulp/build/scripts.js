@@ -29,7 +29,7 @@ gulp.task('browserify', function() {
 var configPipe = lazypipe()
   .pipe($.yaml)
   .pipe($.extend, 'config.js')
-  .pipe($.wrap, 'angular.module(\'app\').value(\'appConfig\', <%= contents %>);');
+  .pipe($.wrap, 'angular.module(\'app\').constant(\'appConfig\', <%= contents %>);');
 
 gulp.task('config', function() {
   return gulp.src('./config/config.yml')
